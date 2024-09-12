@@ -1,13 +1,13 @@
-package com.tutorial.romanconverter;
+package apap.tutorial.manpromanpro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RomanconverterApplication {
+public class ManpromanproApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RomanconverterApplication.class, args);
+		SpringApplication.run(ManpromanproApplication.class, args);
 	}
 
 }
