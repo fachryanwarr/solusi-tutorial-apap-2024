@@ -1,4 +1,4 @@
-package apap.tutorial.manpromanpro.controller.DTO;
+package apap.tutorial.manpromanpro.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProyekDTO {
+public class ProjectResponseDTO {
     private UUID id;
     private String nama;
     private String tanggalMulai;

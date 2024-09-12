@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  </head>
+  <body>
+    <nav
+      th:fragment="navbar"
+      class="sticky flex w-full items-center justify-between bg-slate-800 px-5 md:px-10 py-3"
+    >
+      <h1 class="text-xl md:text-2xl font-bold text-neutral-100">
+        ManproManpro
+      </h1>
+
+      <ul
+        class="flex items-center gap-4 text-white font-medium text-sm text-center flex-shrink-0"
+      >
+        <li class="flex-shrink-0">
+          <a
+            href="/proyek/add"
+            class="md:px-3 md:py-2 hover:bg-white hover:bg-opacity-40 rounded-lg"
+            >Add Project</a
+          >
+        </li>
+        <li class="flex-shrink-0">
+          <a
+            href="/proyek/viewall"
+            class="md:px-3 md:py-2 hover:bg-white hover:bg-opacity-40 rounded-lg"
+            >Projects</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </body>
+</html>

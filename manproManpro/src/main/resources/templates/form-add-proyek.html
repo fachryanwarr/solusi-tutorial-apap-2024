@@ -1,53 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <title>Home</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-  <title>Home</title>
-</head>
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="screen flex w-full items-center justify-center px-10 py-5">
+      <div
+        class="w-full rounded-xl border border-gray-100 bg-white px-10 py-5 shadow-xl md:w-[70%]"
+      >
+        <h2 class="text-center text-xl font-bold">Add Project</h2>
 
-<body>
-    <div class="container">
-        <div class="card m-4 p-4">
-            <div class="card-body">
-                <div class="justify-content-center">
-                    <h2>Tambah Proyek</h2>
-                    <br>
-                    <form th:action="@{/proyek/add}" th:object="${proyekDTO}" method="POST">
-                      <input class="form-control" type="hidden" th:field="*{id}"/>
-                      
-                        Nama Proyek: <br>
-                        <input class="form-control" type="text" th:field="*{nama}"/> 
-                        <br><br>
-    
-                        Tanggal Mulai: <br>
-                        <input class="form-control" type="date" th:field="*{tanggalMulai}"/> 
-                        <br><br>
-    
-                        Tanggal Selesai: <br>
-                        <input class="form-control" type="date" th:field="*{tanggalSelesai}"/> 
-                        <br><br>
-    
-                        Status: <br>
-                        <input required class="form-control" type="text" th:field="*{status}"/> 
-                        <br><br>
+        <form
+          th:action="${action != null} ? ${action} : '/proyek/add'"
+          th:object="${proyekDTO}"
+          method="POST"
+          class="mt-8"
+        >
+          <input type="hidden" th:field="*{id}" />
 
-                        Developer: <br>
-                        <input required class="form-control" type="text" th:field="*{developer}"/> 
-                        <br><br>
-    
-                        
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <a class="btn btn-primary" href="/">Home</a>
-                    </form>
-                </div>
+          <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
+            <div>
+              <label for="nama" class="font-medium text-slate-600"
+                >Nama Project</label
+              >
+              <input
+                th:field="*{nama}"
+                placeholder="Nama Project"
+                type="text"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
             </div>
-        </div>
-      </div>
-    
-</body>
 
+            <div>
+              <label for="status" class="font-medium text-slate-600"
+                >Status</label
+              >
+              <select
+                th:field="*{status}"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="Status Project"
+              >
+                <option value="1">On Going</option>
+                <option value="2">Finished</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="tanggalMulai" class="font-medium text-slate-600"
+                >Tanggal Mulai</label
+              >
+              <input
+                th:field="*{tanggalMulai}"
+                type="date"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label for="tanggalSelesai" class="font-medium text-slate-600"
+                >Tanggal Selesai</label
+              >
+              <input
+                th:field="*{tanggalSelesai}"
+                type="date"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label for="developer" class="font-medium text-slate-600"
+                >Developer</label
+              >
+              <input
+                th:field="*{developer}"
+                placeholder="Developer"
+                type="text"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 mt-5">
+            <button
+              type="submit"
+              class="w-fit rounded-full bg-blue-400 px-8 py-2 font-semibold text-white hover:bg-blue-500 active:bg-blue-600"
+            >
+              Submit
+            </button>
+            <a
+              href="/"
+              class="w-fit rounded-full bg-red-400 px-8 py-2 font-semibold text-white hover:bg-red-500 active:bg-red-600"
+            >
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <title>ManproManpro</title>
+  </head>
+
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="flex h-screen w-full flex-col items-center justify-center p-10">
+      <div
+        class="flex w-[50%] flex-col gap-2 rounded-xl bg-white px-5 py-10 shadow-lg"
+      >
+        <h1
+          th:class="${type != null && type.equals('success') ? 'text-2xl font-bold text-slate-700' : 'text-2xl font-bold text-red-400'}"
+          th:text="${type != null && type.equals('success') ? 'Success' : 'Error!'}"
+        >
+          Success
+        </h1>
+        <hr />
+        <h1
+          class="text-balance text-base font-medium text-gray-400"
+          th:if="${msg != null}"
+          th:text="${msg}"
+        >
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus, aut?
+        </h1>
+      </div>
+      <div class="w-[50%]">
+        <a
+          href="/"
+          type="button"
+          class="mt-4 w-fit rounded-full font-semibold text-blue-400 hover:text-blue-500 hover:underline active:text-blue-600"
+          >Back to Home</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
