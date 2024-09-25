@@ -1,6 +1,7 @@
 package apap.tutorial.manpromanpro.dto.mapper;
 
 import apap.tutorial.manpromanpro.dto.request.AddDeveloperRequestDTO;
+import apap.tutorial.manpromanpro.dto.request.UpdateDeveloperRequestDTO;
 import apap.tutorial.manpromanpro.dto.response.DeveloperResponseDTO;
 import apap.tutorial.manpromanpro.model.Developer;
 import org.springframework.stereotype.Component;
@@ -36,5 +37,16 @@ public class DeveloperMapper {
         developerResponse.setUpdatedAt(formatterDatetime.format(developer.getUpdatedAt()));
 
         return developerResponse;
+    }
+
+    public UpdateDeveloperRequestDTO developerToUpdateDeveloperDTO(Developer developer) {
+        var updateDTO = new UpdateDeveloperRequestDTO();
+        updateDTO.setId(developer.getId());
+        updateDTO.setNama(developer.getNama());
+        updateDTO.setAlamat(developer.getAlamat());
+        updateDTO.setEmail(developer.getEmail());
+        updateDTO.setTanggalBerdiri(developer.getTanggalBerdiri());
+
+        return updateDTO;
     }
 }

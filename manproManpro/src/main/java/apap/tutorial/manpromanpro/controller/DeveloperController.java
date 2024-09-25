@@ -2,12 +2,16 @@ package apap.tutorial.manpromanpro.controller;
 
 import apap.tutorial.manpromanpro.dto.request.AddDeveloperRequestDTO;
 import apap.tutorial.manpromanpro.dto.mapper.DeveloperMapper;
+import apap.tutorial.manpromanpro.dto.request.UpdateDeveloperRequestDTO;
 import apap.tutorial.manpromanpro.model.Developer;
 import apap.tutorial.manpromanpro.service.DeveloperService;
 import apap.tutorial.manpromanpro.service.ProyekService;
+import apap.tutorial.manpromanpro.utils.ErrorMessage;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +25,8 @@ public class DeveloperController {
     private DeveloperMapper developerMapper;
     @Autowired
     private ProyekService proyekService;
+    @Autowired
+    private ErrorMessage errorMessage;
 
     @GetMapping("/developer/add")
     public String formAddDeveloper(Model model) {
@@ -75,6 +81,45 @@ public class DeveloperController {
             developer.setListProyek(proyekService.getByDeveloper(developer));
             model.addAttribute("developer", developerMapper.developerToDeveloperResponse(developer));
             return "view-developer";
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+    }
+
+    @GetMapping("/developer/{id}/update")
+    public String updateDeveloperForm(@PathVariable("id") String id, Model model) {
+        try {
+            var developer = developerService.getDeveloperById(Long.parseLong(id));
+            var updateDTO = developerMapper.developerToUpdateDeveloperDTO(developer);
+
+            model.addAttribute("developerDTO", updateDTO);
+
+            return "form-update-developer";
+        }  catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+    }
+
+    @PostMapping("/developer/update")
+    public String updateDeveloper(@Valid @ModelAttribute UpdateDeveloperRequestDTO updateDTO,
+                                  BindingResult bindingResult,
+                                  Model model) {
+        if (bindingResult.hasErrors()) {
+            var error = errorMessage.getErrorMsg(bindingResult);
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", error);
+            return "response-page";
+        }
+
+        try {
+            developerService.updateDeveloper(updateDTO);
+            model.addAttribute("type", "success");
+            model.addAttribute("msg", "Developer dengan ID " + updateDTO.getId() + " berhasil diupdate");
+            return "response-page";
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());

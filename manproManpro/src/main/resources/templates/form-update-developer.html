@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <title>Update Developer</title>
+  </head>
+
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="screen flex w-full items-center justify-center px-10 py-5">
+      <div
+        class="w-full rounded-xl border border-gray-100 bg-white px-10 py-5 shadow-xl md:w-[70%]"
+      >
+        <h2 class="text-center text-xl font-bold">Update Developer</h2>
+
+        <form
+          th:action="@{/developer/update}"
+          th:object="${developerDTO}"
+          method="POST"
+          class="mt-8"
+        >
+          <input type="text" class="hidden" th:field="*{id}" />
+
+          <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
+            <div>
+              <label for="nama" class="font-medium text-slate-600"
+                >Nama Developer</label
+              >
+              <input
+                th:field="*{nama}"
+                placeholder="Nama Developer"
+                type="text"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label for="alamat" class="font-medium text-slate-600"
+                >Alamat</label
+              >
+              <input
+                th:field="*{alamat}"
+                placeholder="Alamat Developer"
+                type="text"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="font-medium text-slate-600"
+                >Email</label
+              >
+              <input
+                th:field="*{email}"
+                placeholder="developer@gmail.com"
+                type="email"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label for="tanggalBerdiri" class="font-medium text-slate-600"
+                >Tanggal Berdiri</label
+              >
+              <input
+                th:field="*{tanggalBerdiri}"
+                type="date"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 mt-5">
+            <button
+              type="submit"
+              class="w-fit rounded-full bg-blue-400 px-8 py-2 font-semibold text-white hover:bg-blue-500 active:bg-blue-600"
+            >
+              Submit
+            </button>
+            <a
+              href="/"
+              class="w-fit rounded-full bg-red-400 px-8 py-2 font-semibold text-white hover:bg-red-500 active:bg-red-600"
+            >
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
