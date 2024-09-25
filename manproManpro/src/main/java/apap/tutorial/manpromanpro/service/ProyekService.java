@@ -18,4 +18,6 @@ public interface ProyekService {
     void deleteProject(UUID id);
 
     List<Proyek> getByDeveloper(Developer developer);
+
+    List<Proyek> getAllProyekFilter(String nama, String status);
 }

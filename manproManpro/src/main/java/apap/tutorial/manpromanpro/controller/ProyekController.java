@@ -111,14 +111,20 @@ public class ProyekController {
     }
 
     @GetMapping("/proyek/viewall")
-    public String listProyek(Model model) {
+    public String listProyek(@RequestParam(value = "nama", required = false) String nama,
+                             @RequestParam(value = "status", required = false) String status,
+                             Model model) {
         try {
-            List<Proyek> listProyek = proyekService.getAllProyek();
+            List<Proyek> listProyek = proyekService.getAllProyekFilter(nama, status);
             List<ProjectResponseDTO> projectResponseList = new ArrayList<>();
 
             for (Proyek proyek : listProyek) {
                 projectResponseList.add(proyekMapper.proyekToProjectResponseDTO(proyek));
             }
+
+            if (nama != null) model.addAttribute("namaSelected", nama);
+            if (status != null) model.addAttribute("statusSelected", status);
+
             model.addAttribute("listProyek", projectResponseList);
         } catch (Exception e) {
             model.addAttribute("type", "error");

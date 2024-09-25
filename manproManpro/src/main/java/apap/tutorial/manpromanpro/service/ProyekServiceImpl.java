@@ -8,6 +8,7 @@ import apap.tutorial.manpromanpro.model.Developer;
 import apap.tutorial.manpromanpro.repository.ProyekDb;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import apap.tutorial.manpromanpro.model.Proyek;
 
@@ -63,6 +64,21 @@ public class ProyekServiceImpl implements ProyekService {
     @Override
     public List<Proyek> getByDeveloper(Developer developer) {
         return proyekDb.findByDeletedAtNullAndDeveloper(developer);
+    }
+
+    @Override
+    public List<Proyek> getAllProyekFilter(String nama, String status) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "nama");
+
+        if (nama != null && !nama.isBlank() && status != null && !status.isBlank()) {
+            return proyekDb.findByDeletedAtNullAndNamaContainsIgnoreCaseAndStatus(nama, Integer.parseInt(status), sort);
+        } else if (nama != null && !nama.isBlank()) {
+            return proyekDb.findByDeletedAtNullAndNamaContainsIgnoreCase(nama, sort);
+        } else if (status != null && !status.isBlank()) {
+            return proyekDb.findByDeletedAtNullAndStatus(Integer.parseInt(status), sort);
+        } else {
+            return proyekDb.findByDeletedAtNull(sort);
+        }
     }
 
     private void validateProject(Proyek proyek) {
