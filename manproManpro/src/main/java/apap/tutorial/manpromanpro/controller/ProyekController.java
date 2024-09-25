@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import apap.tutorial.manpromanpro.dto.ProjectResponseDTO;
+import apap.tutorial.manpromanpro.dto.request.AddProjectRequestDTO;
+import apap.tutorial.manpromanpro.dto.response.ProjectResponseDTO;
+import apap.tutorial.manpromanpro.dto.request.UpdateProjectRequestDTO;
+import apap.tutorial.manpromanpro.dto.mapper.ProyekMapper;
+import apap.tutorial.manpromanpro.service.DeveloperService;
+import apap.tutorial.manpromanpro.utils.ErrorMessage;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import apap.tutorial.manpromanpro.dto.ProyekDTO;
 import apap.tutorial.manpromanpro.model.Proyek;
 import apap.tutorial.manpromanpro.service.ProyekService;
 
@@ -18,6 +24,12 @@ import apap.tutorial.manpromanpro.service.ProyekService;
 public class ProyekController {
     @Autowired
     private ProyekService proyekService;
+    @Autowired
+    private ProyekMapper proyekMapper;
+    @Autowired
+    private DeveloperService developerService;
+    @Autowired
+    private ErrorMessage errorMessage;
 
     @GetMapping("/")
     private String home() {
@@ -27,8 +39,9 @@ public class ProyekController {
     @GetMapping("/proyek/add")
     public String addProyekForm(Model model) {
         try {
-            var proyekDTO = new ProyekDTO();
+            var proyekDTO = new AddProjectRequestDTO();
             model.addAttribute("proyekDTO", proyekDTO);
+            model.addAttribute("developers", developerService.getAllDeveloper());
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
@@ -39,14 +52,22 @@ public class ProyekController {
     }
 
     @PostMapping("/proyek/add")
-    public String addProyek(@ModelAttribute ProyekDTO proyekDTO, Model model) {
+    public String addProyek(@Valid @ModelAttribute AddProjectRequestDTO proyekDTO,
+                            BindingResult bindingResult,
+                            Model model) {
+        if (bindingResult.hasErrors()) {
+            var error = errorMessage.getErrorMsg(bindingResult);
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", error);
+            return "response-page";
+        }
+
         try {
-            UUID idProyek = UUID.randomUUID();
-            var proyek = new Proyek(idProyek, proyekDTO.getNama(), proyekDTO.getTanggalMulai(), proyekDTO.getTanggalSelesai(), proyekDTO.getStatus(), proyekDTO.getDeveloper());
+            var proyek = proyekMapper.addProjectDTOToProject(proyekDTO);
             proyekService.createProyek(proyek);
 
             model.addAttribute("type", "success");
-            model.addAttribute("msg", "Project " + proyek.getNama() + " berhasil ditambahkan");
+            model.addAttribute("msg", "Project " + proyekDTO.getNama() + " berhasil ditambahkan");
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
@@ -60,20 +81,22 @@ public class ProyekController {
         try {
             var idProject = UUID.fromString(id);
             var project = proyekService.getProyekById(idProject);
+            var proyekDTO = proyekMapper.proyekToUpdateProjectDTO(project);
 
-            model.addAttribute("proyekDTO", project);
-            model.addAttribute("action", "/proyek/" + project.getId() + "/update");
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("proyekDTO", proyekDTO);
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
             return "response-page";
         }
-        return "form-add-proyek";
+        return "form-update-proyek";
     }
 
     @PostMapping("/proyek/{id}/update")
-    public String updateProject(@ModelAttribute Proyek proyek, Model model) {
+    public String updateProject(@ModelAttribute UpdateProjectRequestDTO proyekDTO, Model model) {
         try {
+            var proyek = proyekMapper.updateProjectDTOToProyek(proyekDTO);
             proyekService.updateProject(proyek);
             model.addAttribute("type", "success");
             model.addAttribute("msg", "Project dengan id " + proyek.getId() + " berhasil diubah");
@@ -102,14 +125,20 @@ public class ProyekController {
     }
 
     @GetMapping("/proyek/viewall")
-    public String listProyek(Model model) {
+    public String listProyek(@RequestParam(value = "nama", required = false) String nama,
+                             @RequestParam(value = "status", required = false) String status,
+                             Model model) {
         try {
-            List<Proyek> listProyek = proyekService.getAllProyek();
+            List<Proyek> listProyek = proyekService.getAllProyekFilter(nama, status);
             List<ProjectResponseDTO> projectResponseList = new ArrayList<>();
 
             for (Proyek proyek : listProyek) {
-                projectResponseList.add(proyekService.getProjectResponse(proyek));
+                projectResponseList.add(proyekMapper.proyekToProjectResponseDTO(proyek));
             }
+
+            if (nama != null) model.addAttribute("namaSelected", nama);
+            if (status != null) model.addAttribute("statusSelected", status);
+
             model.addAttribute("listProyek", projectResponseList);
         } catch (Exception e) {
             model.addAttribute("type", "error");
@@ -124,7 +153,7 @@ public class ProyekController {
     public String detailProyek(@PathVariable(value = "id") String id, Model model) {
         try {
             var proyek = proyekService.getProyekById(UUID.fromString(id));
-            var projectResponse = proyekService.getProjectResponse(proyek);
+            var projectResponse = proyekMapper.proyekToProjectResponseDTO(proyek);
             model.addAttribute("proyek", projectResponse);
         } catch (Exception e) {
             model.addAttribute("type", "error");

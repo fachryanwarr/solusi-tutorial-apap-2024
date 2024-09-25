@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
-    <title>Add Project</title>
+    <title>Update Developer</title>
   </head>
 
   <body>
@@ -17,22 +17,24 @@
       <div
         class="w-full rounded-xl border border-gray-100 bg-white px-10 py-5 shadow-xl md:w-[70%]"
       >
-        <h2 class="text-center text-xl font-bold">Add Project</h2>
+        <h2 class="text-center text-xl font-bold">Update Developer</h2>
 
         <form
-          th:action="@{/proyek/add}"
-          th:object="${proyekDTO}"
+          th:action="@{/developer/update}"
+          th:object="${developerDTO}"
           method="POST"
           class="mt-8"
         >
+          <input type="text" class="hidden" th:field="*{id}" />
+
           <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
             <div>
               <label for="nama" class="font-medium text-slate-600"
-                >Nama Project</label
+                >Nama Developer</label
               >
               <input
                 th:field="*{nama}"
-                placeholder="Nama Project"
+                placeholder="Nama Developer"
                 type="text"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -40,51 +42,12 @@
             </div>
 
             <div>
-              <label for="status" class="font-medium text-slate-600"
-                >Status</label
-              >
-              <select
-                th:field="*{status}"
-                required
-                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Status Project"
-              >
-                <option value="1">On Going</option>
-                <option value="2">Finished</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="tanggalMulai" class="font-medium text-slate-600"
-                >Tanggal Mulai</label
+              <label for="alamat" class="font-medium text-slate-600"
+                >Alamat</label
               >
               <input
-                th:field="*{tanggalMulai}"
-                type="date"
-                required
-                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label for="tanggalSelesai" class="font-medium text-slate-600"
-                >Tanggal Selesai</label
-              >
-              <input
-                th:field="*{tanggalSelesai}"
-                type="date"
-                required
-                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label for="deskripsi" class="font-medium text-slate-600"
-                >Deskripsi</label
-              >
-              <textarea
-                th:field="*{deskripsi}"
-                placeholder="Deskripsi"
+                th:field="*{alamat}"
+                placeholder="Alamat Developer"
                 type="text"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -92,21 +55,28 @@
             </div>
 
             <div>
-              <label for="developer" class="font-medium text-slate-600"
-                >Developer</label
+              <label for="email" class="font-medium text-slate-600"
+                >Email</label
               >
-              <select
-                th:field="*{developer}"
+              <input
+                th:field="*{email}"
+                placeholder="developer@gmail.com"
+                type="email"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Pilih Developer"
+              />
+            </div>
+
+            <div>
+              <label for="tanggalBerdiri" class="font-medium text-slate-600"
+                >Tanggal Berdiri</label
               >
-                <option
-                  th:each="developer: ${developers}"
-                  th:value="${developer.id}"
-                  th:text="${developer.nama}"
-                ></option>
-              </select>
+              <input
+                th:field="*{tanggalBerdiri}"
+                type="date"
+                required
+                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
             </div>
           </div>
 

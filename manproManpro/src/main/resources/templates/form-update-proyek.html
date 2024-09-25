@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
-    <title>Add Project</title>
+    <title>Update Project</title>
   </head>
 
   <body>
@@ -17,14 +17,16 @@
       <div
         class="w-full rounded-xl border border-gray-100 bg-white px-10 py-5 shadow-xl md:w-[70%]"
       >
-        <h2 class="text-center text-xl font-bold">Add Project</h2>
+        <h2 class="text-center text-xl font-bold">Update Project</h2>
 
         <form
-          th:action="@{/proyek/add}"
+          th:action="@{/proyek/{idProyek}/update(idProyek=${proyekDTO.id})}"
           th:object="${proyekDTO}"
           method="POST"
           class="mt-8"
         >
+          <input type="text" class="hidden" th:field="*{id}" />
+
           <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
             <div>
               <label for="nama" class="font-medium text-slate-600"
