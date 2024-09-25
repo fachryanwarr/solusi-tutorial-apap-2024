@@ -13,10 +13,10 @@
 
   <body>
     <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-    <div class="flex h-screen w-full flex-col items-center p-10">
+    <div class="flex min-h-screen w-full flex-col items-center p-10">
       <h1 class="text-2xl font-bold text-slate-700">Project Information</h1>
       <div
-        class="mt-5 flex w-[90%] flex-col gap-2 rounded-xl bg-white p-5 shadow-xl md:w-[50%]"
+        class="mt-5 flex w-[90%] flex-col gap-2 rounded-xl bg-white p-5 shadow-xl md:w-[50%] border border-gray-300"
       >
         <h3
           class="mx-auto text-xl font-bold text-slate-600"
@@ -27,7 +27,7 @@
         <hr class="" />
         <p
           class="mx-auto font-semibold text-gray-400"
-          th:text="${proyek.developer}"
+          th:text="${'Developed by: ' + proyek.developer.nama}"
         >
           Developer Name
         </p>
@@ -38,21 +38,39 @@
           </p>
         </div>
         <div class="mt-2">
+          <p class="font-semibold text-gray-500">Deskripsi</p>
+          <p class="mt-1 text-slate-500" th:text="${proyek.deskripsi}">
+            Lorem ipsum dolor sit amet.
+          </p>
+        </div>
+        <div class="mt-2">
           <p class="font-semibold text-gray-500">Start Date</p>
-          <p class="mt-1 text-slate-500" th:text="${proyek.tanggalMulai}">
+          <p class="mt-1 text-slate-500" th:text="${proyek.tanggalMulaiStr}">
             Lorem ipsum dolor sit amet.
           </p>
         </div>
         <div class="mt-2">
           <p class="font-semibold text-gray-500">End Date</p>
-          <p class="mt-1 text-slate-500" th:text="${proyek.tanggalSelesai}">
+          <p class="mt-1 text-slate-500" th:text="${proyek.tanggalSelesaiStr}">
             Lorem ipsum dolor sit amet.
           </p>
         </div>
         <div class="mt-2">
           <p class="font-semibold text-gray-500">Status</p>
-          <p class="mt-1 text-slate-500" th:text="${proyek.status}">
+          <p class="mt-1 text-slate-500" th:text="${proyek.statusStr}">
             Lorem ipsum dolor sit amet.
+          </p>
+        </div>
+        <div class="mt-2">
+          <p class="font-semibold text-gray-500">Created At</p>
+          <p class="mt-1 text-slate-500" th:text="${proyek.createdAt}">
+            Month dd, yyyy | hh:mm:dd
+          </p>
+        </div>
+        <div class="mt-2">
+          <p class="font-semibold text-gray-500">Last Updated at</p>
+          <p class="mt-1 text-slate-500" th:text="${proyek.updatedAt}">
+            Month dd, yyyy | hh:mm:dd
           </p>
         </div>
       </div>

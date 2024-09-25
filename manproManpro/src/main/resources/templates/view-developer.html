@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <title>Detail</title>
+  </head>
+
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="flex min-h-screen w-full flex-col items-center p-10">
+      <h1 class="text-2xl font-bold text-slate-700">Project Information</h1>
+      <div
+        class="mt-5 flex w-[90%] flex-col gap-2 rounded-xl border border-gray-300 bg-white p-5 shadow-xl lg:w-[60%]"
+      >
+        <h3
+          class="mx-auto text-xl font-bold text-slate-600"
+          th:text="${developer.nama}"
+        >
+          Developer Name
+        </h3>
+        <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 mt-4">
+          <div class="mt-2">
+            <p class="font-semibold text-gray-500">Developer ID</p>
+            <p class="mt-1 text-slate-500" th:text="${developer.id}">
+              Lorem ipsum dolor sit amet.
+            </p>
+          </div>
+          <div class="mt-2">
+            <p class="font-semibold text-gray-500">Alamat</p>
+            <p class="mt-1 text-slate-500" th:text="${developer.alamat}">
+              Lorem ipsum dolor sit amet.
+            </p>
+          </div>
+          <div class="mt-2">
+            <p class="font-semibold text-gray-500">Email</p>
+            <p class="mt-1 text-slate-500" th:text="${developer.email}">
+              Lorem ipsum dolor sit amet.
+            </p>
+          </div>
+          <div class="mt-2">
+            <p class="font-semibold text-gray-500">Tanggal Berdiri</p>
+            <p
+              class="mt-1 text-slate-500"
+              th:text="${developer.tanggalBerdiri}"
+            >
+              Lorem ipsum dolor sit amet.
+            </p>
+          </div>
+          <div class="mt-2">
+            <p class="font-semibold text-gray-500">Created At</p>
+            <p class="mt-1 text-slate-500" th:text="${developer.createdAt}">
+              Month dd, yyyy | hh:mm:dd
+            </p>
+          </div>
+          <div class="mt-2">
+            <p class="font-semibold text-gray-500">Last Updated at</p>
+            <p class="mt-1 text-slate-500" th:text="${developer.updatedAt}">
+              Month dd, yyyy | hh:mm:dd
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <p class="text-lg font-bold text-gray-500">Proyek yang dikerjakan</p>
+          <ul class="ml-5 list-outside list-disc">
+            <li th:each="project : ${developer.listProyek}" class="mt-2">
+              <a th:href="@{/proyek/{idProyek}(idProyek=${project.id})}">
+                <p
+                  th:text="${project.nama}"
+                  class="cursor-pointer font-medium text-blue-400 hover:text-blue-500"
+                >
+                  Lorem Ipsum
+                </p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-5 w-[90%] md:w-[50%]">
+        <a
+          href="/developer/viewall"
+          class="rounded-lg bg-blue-400 px-5 py-1.5 font-medium text-white hover:bg-blue-500 active:bg-blue-600"
+          >Back
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
