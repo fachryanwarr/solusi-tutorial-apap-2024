@@ -43,7 +43,16 @@ public class DeveloperController {
     }
 
     @PostMapping("/developer/add")
-    public String addDeveloper(@ModelAttribute("developerDTO") AddDeveloperRequestDTO developerDTO, Model model) {
+    public String addDeveloper(@Valid @ModelAttribute("developerDTO") AddDeveloperRequestDTO developerDTO,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            var error = errorMessage.getErrorMsg(bindingResult);
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", error);
+            return "response-page";
+        }
+
         try {
             var developer = developerMapper.developerRequestDTOToDeveloper(developerDTO);
             developerService.addDeveloper(developer);

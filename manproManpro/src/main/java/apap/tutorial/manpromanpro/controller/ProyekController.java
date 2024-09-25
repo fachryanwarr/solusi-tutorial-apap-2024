@@ -9,9 +9,12 @@ import apap.tutorial.manpromanpro.dto.response.ProjectResponseDTO;
 import apap.tutorial.manpromanpro.dto.request.UpdateProjectRequestDTO;
 import apap.tutorial.manpromanpro.dto.mapper.ProyekMapper;
 import apap.tutorial.manpromanpro.service.DeveloperService;
+import apap.tutorial.manpromanpro.utils.ErrorMessage;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import apap.tutorial.manpromanpro.model.Proyek;
@@ -25,6 +28,8 @@ public class ProyekController {
     private ProyekMapper proyekMapper;
     @Autowired
     private DeveloperService developerService;
+    @Autowired
+    private ErrorMessage errorMessage;
 
     @GetMapping("/")
     private String home() {
@@ -47,7 +52,16 @@ public class ProyekController {
     }
 
     @PostMapping("/proyek/add")
-    public String addProyek(@ModelAttribute AddProjectRequestDTO proyekDTO, Model model) {
+    public String addProyek(@Valid @ModelAttribute AddProjectRequestDTO proyekDTO,
+                            BindingResult bindingResult,
+                            Model model) {
+        if (bindingResult.hasErrors()) {
+            var error = errorMessage.getErrorMsg(bindingResult);
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", error);
+            return "response-page";
+        }
+
         try {
             var proyek = proyekMapper.addProjectDTOToProject(proyekDTO);
             proyekService.createProyek(proyek);
