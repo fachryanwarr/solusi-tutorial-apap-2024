@@ -1,6 +1,5 @@
 package apap.tutorial.manpromanpro.service;
 
-import apap.tutorial.manpromanpro.dto.response.DeveloperResponseDTO;
 import apap.tutorial.manpromanpro.model.Developer;
 import apap.tutorial.manpromanpro.repository.DeveloperDb;
 import jakarta.persistence.EntityNotFoundException;

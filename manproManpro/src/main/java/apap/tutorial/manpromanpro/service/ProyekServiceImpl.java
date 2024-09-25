@@ -1,8 +1,10 @@
 package apap.tutorial.manpromanpro.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import apap.tutorial.manpromanpro.model.Developer;
 import apap.tutorial.manpromanpro.repository.ProyekDb;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,17 @@ public class ProyekServiceImpl implements ProyekService {
 
     @Override
     public List<Proyek> getAllProyek() {
-        return proyekDb.findAll();
+        return proyekDb.findByDeletedAtNull();
     }
 
     @Override
     public Proyek getProyekById(UUID id) {
         var proyek = proyekDb.findById(id);
-        if (proyek.isPresent()) return proyek.get();
+        if (proyek.isPresent()) {
+            if (proyek.get().getDeletedAt() == null) {
+                return proyek.get();
+            }
+        }
         throw new EntityNotFoundException("Project tidak ditemukan");
     }
 
@@ -50,7 +56,13 @@ public class ProyekServiceImpl implements ProyekService {
     @Override
     public void deleteProject(UUID id) {
         var project = getProyekById(id);
-        proyekDb.delete(project);
+        project.setDeletedAt(new Date());
+        proyekDb.save(project);
+    }
+
+    @Override
+    public List<Proyek> getByDeveloper(Developer developer) {
+        return proyekDb.findByDeletedAtNullAndDeveloper(developer);
     }
 
     private void validateProject(Proyek proyek) {

@@ -39,6 +39,9 @@ public class Proyek {
     @Column(name = "updated_at")
     private java.util.Date updatedAt;
 
+    @Column(name = "deleted_at")
+    private java.util.Date deletedAt;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "developer_id", referencedColumnName = "id")
     private Developer developer;

@@ -2,6 +2,7 @@ package apap.tutorial.manpromanpro.controller;
 
 import apap.tutorial.manpromanpro.dto.request.AddDeveloperRequestDTO;
 import apap.tutorial.manpromanpro.dto.mapper.DeveloperMapper;
+import apap.tutorial.manpromanpro.model.Developer;
 import apap.tutorial.manpromanpro.service.DeveloperService;
 import apap.tutorial.manpromanpro.service.ProyekService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class DeveloperController {
     public String listDeveloper(Model model) {
         try {
             var listDeveloper = developerService.getAllDeveloper();
+            for (Developer developer : listDeveloper) {
+                developer.setListProyek(proyekService.getByDeveloper(developer));
+            }
             model.addAttribute("listDeveloper", listDeveloper);
             return "viewall-developer";
         } catch (Exception e) {
@@ -68,6 +72,7 @@ public class DeveloperController {
         try {
             var idDeveloper = Long.parseLong(id);
             var developer = developerService.getDeveloperById(idDeveloper);
+            developer.setListProyek(proyekService.getByDeveloper(developer));
             model.addAttribute("developer", developerMapper.developerToDeveloperResponse(developer));
             return "view-developer";
         } catch (Exception e) {
