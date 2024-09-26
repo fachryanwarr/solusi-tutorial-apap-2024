@@ -13,15 +13,15 @@
 
   <body>
     <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-    <div class="flex flex-col gap-8 items-center justify-center p-10">
+    <div class="flex flex-col gap-8 items-center justify-center p-5 md:p-10">
       <div class="text-center">
         <h2 class="text-2xl text-slate-800 font-bold">Daftar Project</h2>
       </div>
-      <div class="">
+      <div class="w-full">
         <form
           action="/proyek/viewall"
           method="get"
-          class="mx-auto flex w-full flex-col flex-wrap items-end md:items-center gap-2 px-5 py-4 md:flex-row"
+          class="mx-auto flex w-full flex-col flex-wrap items-start md:items-center justify-center gap-2 px-5 py-4 md:flex-row"
         >
           <input
             type="text"
@@ -29,17 +29,21 @@
             id="nama"
             placeholder="Nama Proyek"
             th:value="${namaSelected != null ? namaSelected : ''}"
-            class="min-w-48 rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            class="w-full md:w-60 rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           <select
             name="status"
             id="status"
-            class="min-w-48 rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            class="w-full md:w-48 rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
             aria-placeholder="Pilih Status"
           >
-            <option value="">Pilih Status</option>
-            <option th:selected="${statusSelected == '1'}" value="1">On Going</option>
-            <option th:selected="${statusSelected == '2'}" value="2">Finished</option>
+            <option value="">All</option>
+            <option th:selected="${statusSelected == '1'}" value="1">
+              On Going
+            </option>
+            <option th:selected="${statusSelected == '2'}" value="2">
+              Finished
+            </option>
           </select>
           <button
             class="w-fit rounded-lg bg-blue-400 px-4 py-2 font-semibold text-white hover:bg-blue-500 active:bg-blue-600"
@@ -60,9 +64,16 @@
             >
               Project Name
             </h3>
+            <p
+              th:text="${proyek.statusStr}"
+              class="font-med md:absolute right-4 top-4 w-fit rounded-full bg-blue-800 px-4 py-1 text-xs text-white"
+              th:classappend="${proyek.statusStr.equals('Finished')} ? bg-blue-800 : bg-yellow-800"
+            >
+              Status
+            </p>
             <hr />
             <p
-              class="font-medium text-gray-400 text-wrap"
+              class="font-medium text-gray-400 text-wrap text-sm"
               th:text="'Developed by : '+${proyek.developer.nama}"
             >
               Developed by: Fachry
@@ -71,29 +82,22 @@
               <a
                 th:href="@{/proyek/{idProyek}(idProyek=${proyek.id})}"
                 type="button"
-                class="rounded-lg bg-blue-400 px-5 py-1.5 font-medium text-white hover:bg-blue-500 active:bg-blue-600"
+                class="rounded-lg bg-blue-400 px-3 md:px-5 py-1 md:py-1.5 font-medium text-white hover:bg-blue-500 active:bg-blue-600"
                 >Detail</a
               >
               <a
                 th:href="@{/proyek/{idProyek}/update(idProyek=${proyek.id})}"
                 type="button"
-                class="rounded-lg bg-slate-400 px-5 py-1.5 font-medium text-white hover:bg-slate-500 active:bg-slate-600"
+                class="rounded-lg bg-slate-400 px-3 md:px-5 py-1 md:py-1.5 font-medium text-white hover:bg-slate-500 active:bg-slate-600"
                 >Ubah</a
               >
               <a
                 th:href="@{/proyek/{idProyek}/delete(idProyek=${proyek.id})}"
                 type="button"
-                class="rounded-lg bg-red-400 px-5 py-1.5 font-medium text-white hover:bg-red-500 active:bg-red-600"
+                class="rounded-lg bg-red-400 px-3 md:px-5 py-1 md:py-1.5 font-medium text-white hover:bg-red-500 active:bg-red-600"
                 >Hapus</a
               >
             </div>
-            <p
-              th:text="${proyek.statusStr}"
-              class="font-med absolute right-4 top-4 w-fit rounded-full bg-blue-800 px-4 py-1 text-xs text-white"
-              th:classappend="${proyek.statusStr.equals('Finished')} ? bg-blue-800 : bg-yellow-800"
-            >
-              Status
-            </p>
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ public class ProyekController {
             return "response-page";
         }
 
-        return "form-add-proyek";
+        return "proyek/form-add-proyek";
     }
 
     @PostMapping("/proyek/add")
@@ -90,7 +90,7 @@ public class ProyekController {
             model.addAttribute("msg", e.getMessage());
             return "response-page";
         }
-        return "form-update-proyek";
+        return "proyek/form-update-proyek";
     }
 
     @PostMapping("/proyek/{id}/update")
@@ -146,7 +146,7 @@ public class ProyekController {
             return "response-page";
         }
 
-        return "viewall-proyek";
+        return "proyek/viewall-proyek";
     }
 
     @GetMapping("/proyek/{id}")
@@ -161,6 +161,6 @@ public class ProyekController {
             return "response-page";
         }
 
-        return "view-proyek";
+        return "proyek/view-proyek";
     }
 }
