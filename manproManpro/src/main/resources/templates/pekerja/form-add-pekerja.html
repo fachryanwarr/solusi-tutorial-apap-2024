@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
-    <title>Update Project</title>
+    <title>Add Pekerja</title>
   </head>
 
   <body>
@@ -17,24 +17,22 @@
       <div
         class="w-full rounded-xl border border-gray-100 bg-white px-10 py-5 shadow-xl md:w-[70%]"
       >
-        <h2 class="text-center text-xl font-bold">Update Project</h2>
+        <h2 class="text-center text-xl font-bold">Add Pekerja</h2>
 
         <form
-          th:action="@{/proyek/{idProyek}/update(idProyek=${proyekDTO.id})}"
-          th:object="${proyekDTO}"
+          th:action="@{/pekerja/add}"
+          th:object="${pekerjaDTO}"
           method="POST"
           class="mt-8"
         >
-          <input type="text" class="hidden" th:field="*{id}" />
-
           <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
             <div>
               <label for="nama" class="font-medium text-slate-600 text-sm"
-                >Nama Project</label
+                >Nama Pekerja</label
               >
               <input
                 th:field="*{nama}"
-                placeholder="Nama Project"
+                placeholder="Nama Pekerja"
                 type="text"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -42,51 +40,25 @@
             </div>
 
             <div>
-              <label for="status" class="font-medium text-slate-600 text-sm"
-                >Status</label
-              >
-              <select
-                th:field="*{status}"
-                required
-                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Status Project"
-              >
-                <option value="1">On Going</option>
-                <option value="2">Finished</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="tanggalMulai" class="font-medium text-slate-600 text-sm"
-                >Tanggal Mulai</label
+              <label for="pekerjaan" class="font-medium text-slate-600 text-sm"
+                >Pekerjaan</label
               >
               <input
-                th:field="*{tanggalMulai}"
-                type="date"
+                th:field="*{pekerjaan}"
+                placeholder="Pekerjaan"
+                type="text"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label for="tanggalSelesai" class="font-medium text-slate-600 text-sm"
-                >Tanggal Selesai</label
-              >
-              <input
-                th:field="*{tanggalSelesai}"
-                type="date"
-                required
-                class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label for="deskripsi" class="font-medium text-slate-600 text-sm"
-                >Deskripsi</label
+              <label for="biografi" class="font-medium text-slate-600 text-sm"
+                >Biografi</label
               >
               <textarea
-                th:field="*{deskripsi}"
-                placeholder="Deskripsi"
+                th:field="*{biografi}"
+                placeholder="Type here..."
                 type="text"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -94,21 +66,13 @@
             </div>
 
             <div>
-              <label for="developer" class="font-medium text-slate-600 text-sm"
-                >Developer</label
-              >
-              <select
-                th:field="*{developer}"
+              <label for="usia" class="font-medium text-slate-600 text-sm">Usia</label>
+              <input
+                th:field="*{usia}"
+                type="number"
                 required
                 class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Pilih Developer"
-              >
-                <option
-                  th:each="developer: ${developers}"
-                  th:value="${developer.id}"
-                  th:text="${developer.nama}"
-                ></option>
-              </select>
+              />
             </div>
           </div>
 
@@ -120,7 +84,7 @@
               Submit
             </button>
             <a
-              href="/"
+              href="/pekerja/viewall"
               class="w-fit rounded-full bg-red-400 px-8 py-2 font-semibold text-white hover:bg-red-500 active:bg-red-600"
             >
               Cancel

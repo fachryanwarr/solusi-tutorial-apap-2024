@@ -1,12 +1,15 @@
 package apap.tutorial.manpromanpro.dto.request;
 
 import apap.tutorial.manpromanpro.model.Developer;
+import apap.tutorial.manpromanpro.model.Pekerja;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +32,7 @@ public class AddProjectRequestDTO {
 
     @NotNull(message = "Developer must not be null")
     private Developer developer;
+
+    @NotNull(message = "List pekerja must not be null")
+    private List<Pekerja> listPekerja = new ArrayList<>();
 }
