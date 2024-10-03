@@ -24,7 +24,9 @@
           method="POST"
           class="overflow-x-auto"
         >
-          <table class="w-full text-left text-sm text-gray-500 rtl:text-right overflow-x-auto">
+          <table
+            class="w-full text-left text-sm text-gray-500 rtl:text-right overflow-x-auto"
+          >
             <thead class="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
                 <th scope="col" class="px-3 py-3">
@@ -33,18 +35,21 @@
                 <th scope="col" class="px-3 py-3">ID</th>
                 <th scope="col" class="px-6 py-3">Name</th>
                 <th scope="col" class="px-6 py-3">Age</th>
+                <th scope="col" class="px-6 py-3">Projects</th>
                 <th scope="col" class="px-6 py-3">
                   <span class="sr-only">Detail</span>
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="align-center">
               <tr
                 class="border-b bg-white hover:bg-gray-100"
                 th:each="pekerja: ${listPekerja}"
               >
                 <td>
                   <input
+                    th:attr="disabled=${pekerja.listProyek.size() > 0}"
+                    th:classappend="${pekerja.listProyek.size() > 0 ? 'cursor-not-allowed' : ''}"
                     type="checkbox"
                     th:field="*{listPekerja}"
                     th:value="${pekerja.id}"
@@ -57,9 +62,20 @@
                 >
                   1
                 </th>
-                <td class="px-6 py-3" th:text="${pekerja.nama}">Nama</td>
+                <td
+                  class="px-6 py-3"
+                  th:text="${pekerja.nama}"
+                >
+                  Nama
+                </td>
                 <td class="px-6 py-3" th:text="${pekerja.usia + ' tahun'}">
                   Tahun
+                </td>
+                <td class="px-6 py-3">
+                  <ul class="list-disc" th:if="${pekerja.listProyek.size() > 0}">
+                    <li th:each="proyek : ${pekerja.listProyek}" th:text="${proyek.nama}"></li>
+                  </ul>
+                  <span th:unless="${pekerja.listProyek.size() > 0}">-</span>
                 </td>
                 <td class="px-6 py-3 text-right">
                   <a

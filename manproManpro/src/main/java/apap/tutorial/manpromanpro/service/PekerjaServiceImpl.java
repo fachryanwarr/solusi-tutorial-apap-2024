@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,13 +23,17 @@ public class PekerjaServiceImpl implements PekerjaService {
 
     @Override
     public List<Pekerja> getAllPekerja() {
-        return pekerjaDb.findAll();
+        return pekerjaDb.findByDeletedAtNull();
     }
 
     @Override
     public Pekerja getPekerjaById(Long id) {
         var pekerja = pekerjaDb.findById(id);
-        if (pekerja.isPresent()) return pekerja.get();
+        if (pekerja.isPresent()) {
+            if (pekerja.get().getDeletedAt() == null) {
+                return pekerja.get();
+            }
+        };
 
         throw new EntityNotFoundException("Pekerja tidak ditemukan");
     }
@@ -41,11 +46,12 @@ public class PekerjaServiceImpl implements PekerjaService {
         if (pekerjaList != null) {
             for (Pekerja pekerja : pekerjaList) {
                 if (pekerja.getListProyek() == null || pekerja.getListProyek().isEmpty()) {
+                    pekerja.setDeletedAt(new Date());
                     pekerjaToDelete.add(pekerja);
                 }
             }
         }
 
-        pekerjaDb.deleteAll(pekerjaToDelete);
+        pekerjaDb.saveAll(pekerjaToDelete);
     }
 }

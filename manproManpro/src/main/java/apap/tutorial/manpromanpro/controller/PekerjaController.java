@@ -81,7 +81,7 @@ public class PekerjaController {
         try {
             pekerjaService.deleteListPekerja(deleteDTO.getListPekerja());
             model.addAttribute("type", "success");
-            model.addAttribute("Berhasil delete list pekerja");
+            model.addAttribute("msg", "Berhasil delete list pekerja");
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());

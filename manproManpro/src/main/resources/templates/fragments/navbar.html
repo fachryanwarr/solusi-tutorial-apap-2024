@@ -20,12 +20,13 @@
       </a>
 
       <ul
-        class="flex items-center gap-4 text-white font-medium text-sm text-center flex-shrink-0"
+        class="flex items-center gap-4 font-medium text-sm text-center flex-shrink-0"
       >
         <li class="flex-shrink-0">
           <a
             href="/proyek/viewall"
             class="md:px-3 md:py-2 hover:bg-white hover:bg-opacity-40 rounded-lg"
+            th:classappend="${currentUrl.startsWith('/proyek') ? 'text-yellow-300 font-bold' : 'text-white'}"
             >Projects</a
           >
         </li>
@@ -33,6 +34,7 @@
           <a
             href="/pekerja/viewall"
             class="md:px-3 md:py-2 hover:bg-white hover:bg-opacity-40 rounded-lg"
+            th:classappend="${currentUrl.startsWith('/pekerja') ? 'text-yellow-300 font-bold' : 'text-white'}"
             >Pekerja</a
           >
         </li>
@@ -40,6 +42,7 @@
           <a
             href="/developer/viewall"
             class="md:px-3 md:py-2 hover:bg-white hover:bg-opacity-40 rounded-lg"
+            th:classappend="${currentUrl.startsWith('/developer') ? 'text-yellow-300 font-bold' : 'text-white'}"
             >Developers</a
           >
         </li>
