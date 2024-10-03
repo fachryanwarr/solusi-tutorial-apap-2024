@@ -1,6 +1,5 @@
 package apap.tutorial.manpromanpro.dto.request;
 
-import apap.tutorial.manpromanpro.dto.request.AddProjectRequestDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

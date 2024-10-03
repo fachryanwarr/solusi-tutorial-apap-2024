@@ -129,6 +129,43 @@ public class ProyekController {
             var proyekDTO = proyekMapper.proyekToUpdateProjectDTO(project);
 
             model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
+            model.addAttribute("proyekDTO", proyekDTO);
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+        return "proyek/form-update-proyek";
+    }
+
+    @PostMapping(value = "/proyek/{id}/update", params = {"addRow"})
+    public String updateProjectFormAddRow(@ModelAttribute UpdateProjectRequestDTO proyekDTO,
+                                          Model model) {
+        try {
+            if(proyekDTO.getListPekerja() == null || proyekDTO.getListPekerja().isEmpty()){
+                proyekDTO.setListPekerja(new ArrayList<>());
+            }
+            proyekDTO.getListPekerja().add(new Pekerja());
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
+            model.addAttribute("proyekDTO", proyekDTO);
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+        return "proyek/form-update-proyek";
+    }
+
+    @PostMapping(value = "/proyek/{id}/update", params = {"deleteRow"})
+    public String updateProjectFormDeleteRow(@ModelAttribute UpdateProjectRequestDTO proyekDTO,
+                                             @RequestParam("deleteRow") int row,
+                                             Model model) {
+        try {
+            proyekDTO.getListPekerja().remove(row);
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
             model.addAttribute("proyekDTO", proyekDTO);
         } catch (Exception e) {
             model.addAttribute("type", "error");

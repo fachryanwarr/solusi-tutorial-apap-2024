@@ -33,6 +33,7 @@ public class ProyekMapper {
         project.setStatus(projectRequestDTO.getStatus());
         project.setDeskripsi(projectRequestDTO.getDeskripsi());
         project.setDeveloper(projectRequestDTO.getDeveloper());
+        project.setListPekerja(projectRequestDTO.getListPekerja());
 
         return project;
     }
@@ -46,6 +47,7 @@ public class ProyekMapper {
         proyekDTO.setStatus(proyek.getStatus());
         proyekDTO.setDeskripsi(proyek.getDeskripsi());
         proyekDTO.setDeveloper(proyek.getDeveloper());
+        proyekDTO.setListPekerja(proyek.getListPekerja());
 
         return proyekDTO;
     }

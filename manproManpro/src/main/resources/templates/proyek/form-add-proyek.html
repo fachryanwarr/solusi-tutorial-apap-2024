@@ -55,7 +55,9 @@
             </div>
 
             <div>
-              <label for="tanggalMulai" class="font-medium text-slate-600 text-sm"
+              <label
+                for="tanggalMulai"
+                class="font-medium text-slate-600 text-sm"
                 >Tanggal Mulai</label
               >
               <input
@@ -67,7 +69,9 @@
             </div>
 
             <div>
-              <label for="tanggalSelesai" class="font-medium text-slate-600 text-sm"
+              <label
+                for="tanggalSelesai"
+                class="font-medium text-slate-600 text-sm"
                 >Tanggal Selesai</label
               >
               <input
@@ -151,7 +155,11 @@
                       name="deleteRow"
                       th:value="${iterStat.index}"
                     >
-                      <img th:src="@{/icon/trash.svg}" alt="Trash" title="Trash" />
+                      <img
+                        th:src="@{/icon/trash.svg}"
+                        alt="Trash"
+                        title="Trash"
+                      />
                     </button>
                   </td>
                 </tr>
@@ -167,7 +175,7 @@
               Submit
             </button>
             <a
-              href="/"
+              href="/proyek/viewall"
               class="w-fit rounded-full bg-red-400 px-8 py-2 font-semibold text-white hover:bg-red-500 active:bg-red-600"
             >
               Cancel
