@@ -231,6 +231,31 @@ public class ProyekController {
         return "proyek/viewall-proyek";
     }
 
+    @GetMapping("/proyek/datatable")
+    public String listProyekDatatable(@RequestParam(value = "nama", required = false) String nama,
+                             @RequestParam(value = "status", required = false) String status,
+                             Model model) {
+        try {
+            List<Proyek> listProyek = proyekService.getAllProyekFilter(nama, status);
+            List<ProjectResponseDTO> projectResponseList = new ArrayList<>();
+
+            for (Proyek proyek : listProyek) {
+                projectResponseList.add(proyekMapper.proyekToProjectResponseDTO(proyek));
+            }
+
+            if (nama != null) model.addAttribute("namaSelected", nama);
+            if (status != null) model.addAttribute("statusSelected", status);
+
+            model.addAttribute("listProyek", projectResponseList);
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+
+        return "proyek/viewall-proyek-datatable";
+    }
+
     @GetMapping("/proyek/{id}")
     public String detailProyek(@PathVariable(value = "id") String id, Model model) {
         try {

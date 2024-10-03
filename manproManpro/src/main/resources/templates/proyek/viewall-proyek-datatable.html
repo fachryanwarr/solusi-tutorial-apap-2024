@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: datatable}" th:remove="tag"></object>
+    <title>All Projects</title>
+  </head>
+
+  <body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="flex flex-col gap-4 items-center justify-center p-5 md:p-10">
+      <div class="text-center">
+        <h2 class="text-2xl text-slate-800 font-bold">Daftar Project</h2>
+      </div>
+      <div class="w-full">
+        <form
+          action="/proyek/viewall"
+          method="get"
+          class="mx-auto flex w-full flex-col flex-wrap items-start md:items-center justify-center gap-2 px-5 py-4 md:flex-row"
+        >
+          <input
+            type="text"
+            name="nama"
+            id="nama"
+            placeholder="Nama Proyek"
+            th:value="${namaSelected != null ? namaSelected : ''}"
+            class="w-full md:w-60 rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <select
+            name="status"
+            id="status"
+            class="w-full md:w-48 rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            aria-placeholder="Pilih Status"
+          >
+            <option value="">All</option>
+            <option th:selected="${statusSelected == '1'}" value="1">
+              On Going
+            </option>
+            <option th:selected="${statusSelected == '2'}" value="2">
+              Finished
+            </option>
+          </select>
+          <button
+            class="w-fit rounded-lg bg-blue-400 px-4 py-2 font-semibold text-white hover:bg-blue-500 active:bg-blue-600"
+          >
+            Filter
+          </button>
+        </form>
+      </div>
+
+      <p class="text-slate-700 my-2 font-medium">Open in light mode plase 😅</p>
+      <table id="proyekTable" class="w-full">
+        <thead class="font-bold">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Developer</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="proyek, iterStat : ${listProyek}">
+            <td class="py-2 px-4 flex justify-center" th:text="${iterStat.index + 1}"></td>
+            <td class="py-2 px-4" th:text="${proyek.nama}"></td>
+            <td class="py-2 px-4" th:text="${proyek.statusStr}"></td>
+            <td class="py-2 px-4" th:text="${proyek.developer.nama}"></td>
+            <td class="py-2 px-4 flex justify-center">
+              <a
+                th:href="@{/proyek/{id}(id=${proyek.id})}"
+                type="button"
+                class="rounded-lg bg-blue-400 px-3 md:px-5 py-1 md:py-1.5 font-medium text-white hover:bg-blue-500 active:bg-blue-600"
+                >Detail</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="flex items-center gap-5">
+        <a
+          type="button"
+          class="rounded-full bg-slate-800 px-5 py-1.5 font-medium text-white hover:bg-slate-700 active:bg-slate-600"
+          href="/proyek/add"
+          >Tambah Proyek</a
+        >
+        <a
+          type="button"
+          class="rounded-full bg-slate-800 px-5 py-1.5 font-medium text-white hover:bg-slate-700 active:bg-slate-600"
+          href="/"
+          >Home</a
+        >
+      </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+          const datatable = new DataTable("#proyekTable");
+          datatable["lengthMenu"] = [5, 10, 20];
+        });
+      </script>
+  </body>
+</html>
