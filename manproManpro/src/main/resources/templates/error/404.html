@@ -1,0 +1,28 @@
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <title>404</title>
+  </head>
+  <body>
+    <main
+      class="flex h-screen w-full flex-col items-center justify-center p-10"
+    >
+      <h1 class="font-mono text-8xl font-bold text-slate-700">404</h1>
+      <p class="font-medium text-gray-400">
+        Oops! Looks like you're lost. Let’s get you back on track!
+      </p>
+      <a
+        href="/"
+        type="button"
+        class="cursor-pointer mt-4 rounded-lg bg-gradient-to-br from-green-400 via-red-500 to-yellow-600 hover:bg-gradient-to-tl px-5 py-1.5 font-medium text-white hover:bg-slate-500 active:bg-slate-600 transition-all duration-500"
+        >Home</a
+      >
+    </main>
+  </body>
+</html>

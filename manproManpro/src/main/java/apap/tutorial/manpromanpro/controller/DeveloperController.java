@@ -34,7 +34,7 @@ public class DeveloperController {
             var developerDTO = new AddDeveloperRequestDTO();
             model.addAttribute("developerDTO", developerDTO);
 
-            return "form-add-developer";
+            return "developer/form-add-developer";
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
@@ -74,7 +74,7 @@ public class DeveloperController {
                 developer.setListProyek(proyekService.getByDeveloper(developer));
             }
             model.addAttribute("listDeveloper", listDeveloper);
-            return "viewall-developer";
+            return "developer/viewall-developer";
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
@@ -89,7 +89,7 @@ public class DeveloperController {
             var developer = developerService.getDeveloperById(idDeveloper);
             developer.setListProyek(proyekService.getByDeveloper(developer));
             model.addAttribute("developer", developerMapper.developerToDeveloperResponse(developer));
-            return "view-developer";
+            return "developer/view-developer";
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
@@ -105,7 +105,7 @@ public class DeveloperController {
 
             model.addAttribute("developerDTO", updateDTO);
 
-            return "form-update-developer";
+            return "developer/form-update-developer";
         }  catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());

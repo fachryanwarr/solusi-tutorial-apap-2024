@@ -8,28 +8,26 @@
     <meta charset="UTF-8" />
     <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
-    <title>Update Project</title>
+    <title>Add Project</title>
   </head>
 
   <body>
     <nav th:replace="~{fragments/navbar :: navbar}"></nav>
     <div class="screen flex w-full items-center justify-center px-10 py-5">
       <div
-        class="w-full rounded-xl border border-gray-100 bg-white px-10 py-5 shadow-xl md:w-[70%]"
+        class="w-full rounded-xl border border-gray-300 bg-white px-10 py-5 shadow-xl md:w-[70%]"
       >
-        <h2 class="text-center text-xl font-bold">Update Project</h2>
+        <h2 class="text-center text-xl font-bold">Add Project</h2>
 
         <form
-          th:action="@{/proyek/{idProyek}/update(idProyek=${proyekDTO.id})}"
+          th:action="@{/proyek/add}"
           th:object="${proyekDTO}"
           method="POST"
           class="mt-8"
         >
-          <input type="text" class="hidden" th:field="*{id}" />
-
           <div class="flex flex-col md:grid md:grid-cols-2 gap-5">
             <div>
-              <label for="nama" class="font-medium text-slate-600"
+              <label for="nama" class="font-medium text-slate-600 text-sm"
                 >Nama Project</label
               >
               <input
@@ -42,7 +40,7 @@
             </div>
 
             <div>
-              <label for="status" class="font-medium text-slate-600"
+              <label for="status" class="font-medium text-slate-600 text-sm"
                 >Status</label
               >
               <select
@@ -57,7 +55,9 @@
             </div>
 
             <div>
-              <label for="tanggalMulai" class="font-medium text-slate-600"
+              <label
+                for="tanggalMulai"
+                class="font-medium text-slate-600 text-sm"
                 >Tanggal Mulai</label
               >
               <input
@@ -69,7 +69,9 @@
             </div>
 
             <div>
-              <label for="tanggalSelesai" class="font-medium text-slate-600"
+              <label
+                for="tanggalSelesai"
+                class="font-medium text-slate-600 text-sm"
                 >Tanggal Selesai</label
               >
               <input
@@ -81,7 +83,7 @@
             </div>
 
             <div>
-              <label for="deskripsi" class="font-medium text-slate-600"
+              <label for="deskripsi" class="font-medium text-slate-600 text-sm"
                 >Deskripsi</label
               >
               <textarea
@@ -94,7 +96,7 @@
             </div>
 
             <div>
-              <label for="developer" class="font-medium text-slate-600"
+              <label for="developer" class="font-medium text-slate-600 text-sm"
                 >Developer</label
               >
               <select
@@ -112,6 +114,59 @@
             </div>
           </div>
 
+          <div class="w-full flex flex-col">
+            <button
+              class="w-fit rounded-full bg-blue-400 px-8 py-2 font-semibold text-white hover:bg-blue-500 active:bg-blue-600 self-end"
+              type="submit"
+              name="addRow"
+            >
+              Add Row
+            </button>
+            <table class="w-full mt-4">
+              <thead
+                class="font-semibold text-slate-700 text-left align-top text-sm"
+              >
+                <tr>
+                  <th class="w-[45%]">Pekerja</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="pekerja, iterStat : *{listPekerja}">
+                  <td class="py-2 w-[45%] pr-2">
+                    <select
+                      th:field="*{listPekerja[__${iterStat.index}__].id}"
+                      placeholder="Select Pekerja"
+                      type="text"
+                      required
+                      class="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    >
+                      <option
+                        th:each="option : ${listPekerjaOption}"
+                        th:value="${option.id}"
+                        th:text="${option.nama}"
+                      ></option>
+                    </select>
+                  </td>
+                  <td>
+                    <button
+                      type="submit"
+                      class="rounded-lg bg-red-400 p-2 font-medium text-white hover:bg-red-500 active:bg-red-600"
+                      name="deleteRow"
+                      th:value="${iterStat.index}"
+                    >
+                      <img
+                        th:src="@{/icon/trash.svg}"
+                        alt="Trash"
+                        title="Trash"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <div class="flex items-center gap-4 mt-5">
             <button
               type="submit"
@@ -120,7 +175,7 @@
               Submit
             </button>
             <a
-              href="/"
+              href="/proyek/viewall"
               class="w-fit rounded-full bg-red-400 px-8 py-2 font-semibold text-white hover:bg-red-500 active:bg-red-600"
             >
               Cancel

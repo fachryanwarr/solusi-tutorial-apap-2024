@@ -8,7 +8,9 @@ import apap.tutorial.manpromanpro.dto.request.AddProjectRequestDTO;
 import apap.tutorial.manpromanpro.dto.response.ProjectResponseDTO;
 import apap.tutorial.manpromanpro.dto.request.UpdateProjectRequestDTO;
 import apap.tutorial.manpromanpro.dto.mapper.ProyekMapper;
+import apap.tutorial.manpromanpro.model.Pekerja;
 import apap.tutorial.manpromanpro.service.DeveloperService;
+import apap.tutorial.manpromanpro.service.PekerjaService;
 import apap.tutorial.manpromanpro.utils.ErrorMessage;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class ProyekController {
     @Autowired
     private DeveloperService developerService;
     @Autowired
+    private PekerjaService pekerjaService;
+    @Autowired
     private ErrorMessage errorMessage;
 
     @GetMapping("/")
@@ -42,13 +46,54 @@ public class ProyekController {
             var proyekDTO = new AddProjectRequestDTO();
             model.addAttribute("proyekDTO", proyekDTO);
             model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
             return "response-page";
         }
 
-        return "form-add-proyek";
+        return "proyek/form-add-proyek";
+    }
+
+    @PostMapping(value = "/proyek/add", params = {"addRow"})
+    public String addProyekAddRow(@ModelAttribute AddProjectRequestDTO proyekDTO,
+                                  Model model) {
+        try {
+            if(proyekDTO.getListPekerja() == null || proyekDTO.getListPekerja().isEmpty()){
+                proyekDTO.setListPekerja(new ArrayList<>());
+            }
+            proyekDTO.getListPekerja().add(new Pekerja());
+            model.addAttribute("proyekDTO", proyekDTO);
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
+
+            return "proyek/form-add-proyek";
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+        }
+
+        return "response-page";
+    }
+
+    @PostMapping(value = "/proyek/add", params = {"deleteRow"})
+    public String addProyekDeleteRow(@ModelAttribute AddProjectRequestDTO proyekDTO,
+                                     @RequestParam("deleteRow") int row,
+                                     Model model) {
+        try {
+            proyekDTO.getListPekerja().remove(row);
+            model.addAttribute("proyekDTO", proyekDTO);
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
+
+            return "proyek/form-add-proyek";
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+        }
+
+        return "response-page";
     }
 
     @PostMapping("/proyek/add")
@@ -84,13 +129,50 @@ public class ProyekController {
             var proyekDTO = proyekMapper.proyekToUpdateProjectDTO(project);
 
             model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
             model.addAttribute("proyekDTO", proyekDTO);
         } catch (Exception e) {
             model.addAttribute("type", "error");
             model.addAttribute("msg", e.getMessage());
             return "response-page";
         }
-        return "form-update-proyek";
+        return "proyek/form-update-proyek";
+    }
+
+    @PostMapping(value = "/proyek/{id}/update", params = {"addRow"})
+    public String updateProjectFormAddRow(@ModelAttribute UpdateProjectRequestDTO proyekDTO,
+                                          Model model) {
+        try {
+            if(proyekDTO.getListPekerja() == null || proyekDTO.getListPekerja().isEmpty()){
+                proyekDTO.setListPekerja(new ArrayList<>());
+            }
+            proyekDTO.getListPekerja().add(new Pekerja());
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
+            model.addAttribute("proyekDTO", proyekDTO);
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+        return "proyek/form-update-proyek";
+    }
+
+    @PostMapping(value = "/proyek/{id}/update", params = {"deleteRow"})
+    public String updateProjectFormDeleteRow(@ModelAttribute UpdateProjectRequestDTO proyekDTO,
+                                             @RequestParam("deleteRow") int row,
+                                             Model model) {
+        try {
+            proyekDTO.getListPekerja().remove(row);
+            model.addAttribute("developers", developerService.getAllDeveloper());
+            model.addAttribute("listPekerjaOption", pekerjaService.getAllPekerja());
+            model.addAttribute("proyekDTO", proyekDTO);
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+        return "proyek/form-update-proyek";
     }
 
     @PostMapping("/proyek/{id}/update")
@@ -146,7 +228,32 @@ public class ProyekController {
             return "response-page";
         }
 
-        return "viewall-proyek";
+        return "proyek/viewall-proyek";
+    }
+
+    @GetMapping("/proyek/datatable")
+    public String listProyekDatatable(@RequestParam(value = "nama", required = false) String nama,
+                             @RequestParam(value = "status", required = false) String status,
+                             Model model) {
+        try {
+            List<Proyek> listProyek = proyekService.getAllProyekFilter(nama, status);
+            List<ProjectResponseDTO> projectResponseList = new ArrayList<>();
+
+            for (Proyek proyek : listProyek) {
+                projectResponseList.add(proyekMapper.proyekToProjectResponseDTO(proyek));
+            }
+
+            if (nama != null) model.addAttribute("namaSelected", nama);
+            if (status != null) model.addAttribute("statusSelected", status);
+
+            model.addAttribute("listProyek", projectResponseList);
+        } catch (Exception e) {
+            model.addAttribute("type", "error");
+            model.addAttribute("msg", e.getMessage());
+            return "response-page";
+        }
+
+        return "proyek/viewall-proyek-datatable";
     }
 
     @GetMapping("/proyek/{id}")
@@ -161,6 +268,6 @@ public class ProyekController {
             return "response-page";
         }
 
-        return "view-proyek";
+        return "proyek/view-proyek";
     }
 }
